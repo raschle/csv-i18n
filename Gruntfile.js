@@ -33,22 +33,29 @@ module.exports = function (grunt) {
 
     // Configuration to be run (and then tested).
     centure_i18n: {
-      default_options: {
+      // default_options: {
+      //   options: {
+      //   },
+      //   files: {
+      //     'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123']
+      //   }
+      // },
+      // custom_options: {
+      //   options: {
+      //     separator: ': ',
+      //     punctuation: ' !!!'
+      //   },
+      //   files: {
+      //     'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123']
+      //   }
+      // }
+     default_options: {
         options: {
         },
         files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123']
+          'tmp/i18n.json': ['test/fixtures/i18n.csv']
         }
       },
-      custom_options: {
-        options: {
-          separator: ': ',
-          punctuation: ' !!!'
-        },
-        files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123']
-        }
-      }
     },
 
     // Unit tests.
@@ -67,5 +74,6 @@ module.exports = function (grunt) {
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'test']);
+  grunt.registerTask('run', ['jshint', 'clean', 'centure_i18n']);
 
 };
