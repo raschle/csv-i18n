@@ -45,6 +45,9 @@ module.exports = function (grunt) {
      
     //read from file 
   //  fileStream.pipe(csvConverter);
+  var key = this.data.translations.key;
+  console.log(key);
+  var languages = this.data.translations.languages;
 
 
     var done = this.async();
@@ -66,20 +69,24 @@ module.exports = function (grunt) {
 
            //end_parsed will be emitted once parsing finished 
           csvConverter.on("end_parsed",function(jsonObj){
-             var translations = {heb: {}, eng: {}};
-             console.log(jsonObj);
+             var translations = {};
+             languages.forEach(function(lang){
+                translations[lang] = {};
+             });
              jsonObj.forEach(function(record){
-                translations.heb[record.code] = record.heb;
-                translations.eng[record.code] = record.eng;
+                languages.forEach(function(lang){
+
+                    translations[lang][record[key]] = record[lang];
+                 });
              });
              var dotIndex = file.dest.indexOf('.');
              var fname = file.dest.substring(0, dotIndex);
-             var hebFile = fname.concat(".heb",file.dest.substring(dotIndex));
-             var engFile = fname.concat(".eng",file.dest.substring(dotIndex));
-             grunt.log.writeln("hebfile: "+ hebFile);
-             grunt.log.writeln("hebfile: "+ translations.heb);
-             grunt.file.write(hebFile, JSON.stringify(translations.heb));
-             grunt.file.write(engFile, JSON.stringify(translations.eng));
+             var fext = file.dest.substring(dotIndex);
+            languages.forEach(function(lang){
+                var flangName = fname.concat(".", lang, fext);
+                grunt.file.write(flangName, JSON.stringify(translations[lang]));
+             });
+
              done();
           });
            

@@ -52,6 +52,10 @@ module.exports = function (grunt) {
      default_options: {
         options: {
         },
+        translations:{
+          key: "code",
+          languages: ["heb", "eng"]
+        },
         files: {
           'tmp/i18n.json': ['test/fixtures/i18n.csv']
         }
