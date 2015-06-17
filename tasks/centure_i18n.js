@@ -8,6 +8,9 @@
 
 'use strict';
 
+var Converter = require("csvtojson").core.Converter;
+var fs = require("fs"); 
+
 module.exports = function (grunt) {
 
   // Please see the Grunt documentation for more information regarding task
@@ -17,38 +20,12 @@ module.exports = function (grunt) {
 
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
-      punctuation: '.',
-      separator: ', '
+          key: "code",
+          languages: ["heb", "eng"]
     });
 
-
-    var Converter=require("csvtojson").core.Converter;
-    var fs=require("fs");
-     
-    var csvFileName=this.files[0].src[0];
-     console.log(csvFileName);
-    var fileStream=fs.createReadStream(csvFileName);
-    //new converter instance 
-    var csvConverter=new Converter({constructResult:true});
-    
-//    var done = this.async();
-
-    // //end_parsed will be emitted once parsing finished 
-    // csvConverter.on("end_parsed",function(jsonObj){
-    //    var translations = {heb: [], eng: []};
-    //    jsonObj.forEach(function(record){
-    //       translation.heb.push({record.code, record.heb});
-    //       translation.eng.push({record.code, record.eng});
-    //    })
-    //    done();
-    // });
-     
-    //read from file 
-  //  fileStream.pipe(csvConverter);
-  var key = this.data.translations.key;
-  console.log(key);
-  var languages = this.data.translations.languages;
-
+    var key = this.data.translations.key;
+    var languages = this.data.translations.languages;
 
     var done = this.async();
     //Iterate over all specified file groups.
@@ -65,50 +42,34 @@ module.exports = function (grunt) {
       }).map(function(filepath){
           var fileStream = fs.createReadStream(filepath);
           var csvConverter = new Converter({constructResult:true});
-          
 
            //end_parsed will be emitted once parsing finished 
           csvConverter.on("end_parsed",function(jsonObj){
+            // Creating the translation object
              var translations = {};
              languages.forEach(function(lang){
                 translations[lang] = {};
              });
+             // Populating the translation object with keys and values
              jsonObj.forEach(function(record){
                 languages.forEach(function(lang){
-
                     translations[lang][record[key]] = record[lang];
                  });
              });
-             var dotIndex = file.dest.indexOf('.');
-             var fname = file.dest.substring(0, dotIndex);
-             var fext = file.dest.substring(dotIndex);
+             // Dest file name parts
+             var fileParts = file.dest.split('.');
+             
+             // Saving each language in a separate file, composed out of the file parts
             languages.forEach(function(lang){
-                var flangName = fname.concat(".", lang, fext);
+                var flangName = fileParts[0].concat(".", lang, ".", fileParts[1]);
                 grunt.file.write(flangName, JSON.stringify(translations[lang]));
              });
 
              done();
           });
-           
           //read from file 
           fileStream.pipe(csvConverter);
-
       });
     });
-    //.map(function (filepath) {
-    //     // Read file source.
-    //     return grunt.file.read(filepath);
-    //   }).join(grunt.util.normalizelf(options.separator));
-
-    //   // Handle options.
-    //   src += options.punctuation;
-
-    //   // Write the destination file.
-    //   grunt.file.write(file.dest, src);
-
-    //   // Print a success message.
-    //   grunt.log.writeln('File "' + file.dest + '" created.');
-    // });
   });
-
 };
