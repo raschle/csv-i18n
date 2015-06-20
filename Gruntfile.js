@@ -32,7 +32,7 @@ module.exports = function (grunt) {
     },
 
     // Configuration to be run (and then tested).
-    centure_i18n: {
+    csv_json_i18n: {
      default_options: {
         options: {
         },
@@ -43,19 +43,7 @@ module.exports = function (grunt) {
         files: {
           'tmp/i18n.json': ['test/fixtures/i18n.csv']
         }
-      },
-
-      one_time: {
-        options: {
-        },
-        translations:{
-          key: "code",
-          languages: ["heb"]
-        },
-        files: {
-          'i18n.json': ['i18n.csv']
-        }
-      },
+      }
     },
 
     // Unit tests.
@@ -70,11 +58,9 @@ module.exports = function (grunt) {
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'centure_i18n:default_options', 'nodeunit']);
+  grunt.registerTask('test', ['clean', 'centure_i18n', 'nodeunit']);
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'test']);
-
-  grunt.registerTask('run', ['jshint', 'clean', 'centure_i18n:one_time']);
 
 };

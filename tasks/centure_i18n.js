@@ -16,7 +16,7 @@ module.exports = function (grunt) {
   // Please see the Grunt documentation for more information regarding task
   // creation: http://gruntjs.com/creating-tasks
 
-  grunt.registerMultiTask('centure_i18n', 'Convert CSV to json translation files', function () {
+  grunt.registerMultiTask('csv_json_i18n', 'Convert CSV to json translation files', function () {
 
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
