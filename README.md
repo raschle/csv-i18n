@@ -1,6 +1,7 @@
 # csv-i18n forked for ngx-translate compatibility
 
 > Convert CSV to json translation files
+
 > Added functionality for using nested objects and json filenames from language with suffix
 
 ## Getting Started
