@@ -48,17 +48,21 @@ The above example, will create 2 json files: one for english and one for german.
 It will read the file src/assets/i18n/i18n.csv and will create src/assets/i18n/en.json and src/assets/i18n/de.json
 
 i18n.csv will look like this:
+```
 key,en,de
 HOME.HELLO,hello,Hallo
 HOME.WELCOME,welcome,Willkommen
 LOGOUT,Logout,Ausloggen
+```
 
 en.json will look like this:
+```
 {"HOME":{"HELLO":"hello","WELCOME":"welcome"},"LOGOUT":"Logout"}
-
+```
 de.json will look like this:
+```
 {"HOME":{"HELLO":"Hallo","WELCOME":"Willkommen"},"LOGOUT":"Ausloggen"}
-
+```
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
