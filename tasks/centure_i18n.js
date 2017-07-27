@@ -20,13 +20,14 @@ module.exports = function (grunt) {
 
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
-          key: "code",
-          languages: ["heb", "eng"]
+          key: "key",
+          languages: ["en", "de"]
     });
 
     var key = this.data.translations.key;
     var languages = this.data.translations.languages;
-
+	var suffix = this.data.suffix;
+	
     var done = this.async();
     //Iterate over all specified file groups.
     this.files.forEach(function (file) {
@@ -53,15 +54,23 @@ module.exports = function (grunt) {
              // Populating the translation object with keys and values
              jsonObj.forEach(function(record){
                 languages.forEach(function(lang){
-                    translations[lang][record[key]] = record[lang];
+					
+					var recordParts = record[key].split('.');
+					
+					if(recordParts.length === 1) {
+						translations[lang][record[key]] = record[lang];
+					} else if (recordParts.length === 2){
+						
+						if(!translations[lang][recordParts[0]]) {
+							translations[lang][recordParts[0]] = {};
+						}
+						translations[lang][recordParts[0]][recordParts[1]] = record[lang];
+					}
                  });
              });
-             // Dest file name parts
-             var fileParts = file.dest.split('.');
-             
              // Saving each language in a separate file, composed out of the file parts
             languages.forEach(function(lang){
-                var flangName = fileParts[0].concat(".", lang, ".", fileParts[1]);
+				var flangName = file.dest.concat(lang,suffix);
                 grunt.file.write(flangName, JSON.stringify(translations[lang]));
              });
 

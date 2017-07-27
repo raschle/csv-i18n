@@ -37,12 +37,13 @@ module.exports = function (grunt) {
         options: {
         },
         translations:{
-          key: "code",
-          languages: ["heb", "eng"]
+          key: "key",
+          languages: ["en", "de"]
         },
         files: {
-          'tmp/i18n.json': ['test/fixtures/i18n.csv']
-        }
+          'tmp/': ['test/fixtures/i18n.csv']
+        },
+		suffix: '.json'
       }
     },
 
@@ -58,7 +59,7 @@ module.exports = function (grunt) {
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'centure_i18n', 'nodeunit']);
+  grunt.registerTask('test', ['clean', 'csv_json_i18n', 'nodeunit']);
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'test']);

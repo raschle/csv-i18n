@@ -1,66 +1,63 @@
-# csv-i18n
+# csv-i18n forked for ngx-translate compatibility
 
 > Convert CSV to json translation files
+> Added functionality for using nested objects and json filenames from language with suffix
 
 ## Getting Started
 This plugin requires Grunt.
 
 If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
 
-```shell
-npm install csv-i18n --save-dev
-```
+You have to install this module manually from source
 
-Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
+## Example
 
-```js
-grunt.loadNpmTasks('csv-i18n');
-```
-
-## The "csv_json_i18n" task
-
-### Overview
-In your project's Gruntfile, add a section named `csv_json_i18n` to the data object passed into `grunt.initConfig()`.
+### Gruntfile
 
 ```js
-grunt.initConfig({
-  csv_json_i18n: {
-    your_target: {
-      translations:{
-          key: "code", // the name of the column in the csv file which is the key of the translation
-          languages: ["heb", "eng"] // the name of the column/s you wish to translate
-        },
-        files: {
-          'tmp/i18n.json': ['test/fixtures/i18n.csv']
-        }
-    },
-  },
-})
+module.exports = function(grunt) {
+
+  // Project configuration.
+  grunt.initConfig({
+	  csv_json_i18n: {
+		your_target: {
+		  translations:{
+			  key: "key", // the name of the column in the csv file which is the key of the translation
+			  languages: ["en", "de"] // the name of the column/s you wish to translate
+			},
+			files: {
+			  'src/assets/i18n/': ['src/assets/i18n/i18n.csv']
+			},
+			suffix: '.json'
+		},
+	  },
+  });
+
+  // Load the plugin
+  grunt.loadNpmTasks('csv-i18n');
+
+  // Default task(s)
+  grunt.registerTask('default', ['csv_json_i18n']);
+
+};
 ```
 
-### Usage Examples
+### Usage
 
-The above example, will create 2 json files: one for hebrew and one from english.
-It will read the file test/fixtures/i18n.csv and will create tmp/i18n.heb.json and tmp/i18n.eng.json files
+The above example, will create 2 json files: one for english and one for german.
+It will read the file src/assets/i18n/i18n.csv and will create src/assets/i18n/en.json and src/assets/i18n/de.json
 
-If i18n.csv will look like this:
-code,heb,eng
-YES,כן,yes
-NO,לא,no
+i18n.csv will look like this:
+key,en,de
+HOME.HELLO,hello,Hallo
+HOME.WELCOME,welcome,Willkommen
+LOGOUT,Logout,Ausloggen
 
-i18n.eng.json for example, will look like this:
-{"YES":"yes","NO":"no"}
+en.json will look like this:
+{"HOME":{"HELLO":"hello","WELCOME":"welcome"},"LOGOUT":"Logout"}
 
-You can then, obtain the translation file via require/ajax and use it with a simple translation function like this:
-```js
-// obtain LANGFILE somehow...
-// then:
-var lang = JSON.parse(LANGFILE);
-var translate = function(code) {
-  if(str == "" ) return "";
-  if(lang[str]) return lang[str];
-}
-```
+de.json will look like this:
+{"HOME":{"HELLO":"Hallo","WELCOME":"Willkommen"},"LOGOUT":"Ausloggen"}
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
