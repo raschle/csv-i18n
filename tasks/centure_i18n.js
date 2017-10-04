@@ -65,7 +65,17 @@ module.exports = function (grunt) {
 							translations[lang][recordParts[0]] = {};
 						}
 						translations[lang][recordParts[0]][recordParts[1]] = record[lang];
+          } else if (recordParts.length === 3){
+						
+						if(!translations[lang][recordParts[0]]) {
+							translations[lang][recordParts[0]] = {};
+						}
+						if(!translations[lang][recordParts[0]][recordParts[1]]) {
+							translations[lang][recordParts[0]][recordParts[1]] = {};
+						}
+						translations[lang][recordParts[0]][recordParts[1]][recordParts[2]] = record[lang];
 					}
+                  
                  });
              });
              // Saving each language in a separate file, composed out of the file parts
