@@ -53,6 +53,7 @@ module.exports = function (grunt) {
              });
              // Populating the translation object with keys and values
              jsonObj.forEach(function(record){
+				if(record[key].startsWith("//")) return;
                 languages.forEach(function(lang){
 					
 					var recordParts = record[key].split('.');
@@ -65,7 +66,7 @@ module.exports = function (grunt) {
 							translations[lang][recordParts[0]] = {};
 						}
 						translations[lang][recordParts[0]][recordParts[1]] = record[lang];
-          } else if (recordParts.length === 3){
+					} else if (recordParts.length === 3){
 						
 						if(!translations[lang][recordParts[0]]) {
 							translations[lang][recordParts[0]] = {};
